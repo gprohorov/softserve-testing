@@ -33,7 +33,39 @@ public class MyUtils {
         return result.isEmpty();
     }
 
+    public static  String reformatLines(String text) {
+        final int  MAX_LENGTH = 60;
+        if ( ( text.length() <= MAX_LENGTH ) ) {
+            return text;
+        }
+
+        CharSequence endOfLine = System.lineSeparator();
+        text = text.replace(endOfLine," ");
+        var array = text.split(" +");
+        text = "";
+        String line = "";
+
+    for (int i = 0; i < array.length; i++) {
+        if (line.length() + array[i].length() < MAX_LENGTH) {
+            line += array[i] +  " ";
+        } else {
+            line += endOfLine;
+            text += line;
+            line = array[i] + " ";
+        }
+    }
+        return  text + line;
+    }
     public static void main(String[] args) {
     System.out.println(verifyBrackets("{([])}"));
+    String text =
+        """
+          Java    was      originally developed
+             by    James   Gosling at Sun Microsystems (which
+           has since been
+          acquired by Oracle) and released in 1995
+           as a core component of Sun Microsystems' Java platform.
+            """;
+    System.out.println(reformatLines(text));
     }
 }
