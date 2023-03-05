@@ -35,37 +35,39 @@ public class MyUtils {
 
     public static  String reformatLines(String text) {
         final int  MAX_LENGTH = 60;
-        if ( ( text.length() <= MAX_LENGTH ) ) {
-            return text;
-        }
+         StringBuilder line = new StringBuilder(MAX_LENGTH);
+         StringBuilder output = new StringBuilder();
+        CharSequence eol = "\n";
 
-        CharSequence endOfLine = System.lineSeparator();
-        text = text.replace(endOfLine," ");
-        var array = text.split(" +");
-        text = "";
-        String line = "";
+        var array = text.trim().split("\\s+");
 
-    for (int i = 0; i < array.length; i++) {
-        if (line.length() + array[i].length() < MAX_LENGTH) {
-            line += array[i] +  " ";
-        } else {
-            line += endOfLine;
-            text += line;
-            line = array[i] + " ";
+    for (String word:array) {
+        if (line.length() + word.length() > MAX_LENGTH) {
+
+            output.append(line.substring(0, line.length() -1)).append(eol);
+            line.setLength(0);
         }
+            line.append(word).append(" ");
     }
-        return  text + line;
+        return  output.append(line.substring(0, line.length() - 1)).toString();
     }
+
     public static void main(String[] args) {
-    System.out.println(verifyBrackets("{([])}"));
-    String text =
-        """
-          Java    was      originally developed
-             by    James   Gosling at Sun Microsystems (which
-           has since been
-          acquired by Oracle) and released in 1995
-           as a core component of Sun Microsystems' Java platform.
-            """;
-    System.out.println(reformatLines(text));
+      String text =
+              """
+   Java    was      originally developed
+   by    James   Gosling at Sun Microsystems (which
+ has since been
+acquired by Oracle) and released in 1995
+ as a core component of Sun Microsystems' Java platform.
+                      """;
+      System.out.println(reformatLines(text));
     }
+
+
+
+
+
 }
+
+
